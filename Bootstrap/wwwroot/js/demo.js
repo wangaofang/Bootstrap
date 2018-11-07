@@ -1,18 +1,18 @@
-// $("#contactForm").submit(function(event){
-//     // cancels the form submission
-//     alert( "Handler for .submit() called." );
-//     event.preventDefault();
-//     submitForm();
-// });
+$("#contactForm").submit(function(event){
+    // cancels the form submission
+    alert( "Handler for .submit() called." );
+    event.preventDefault();
+    submitForm();
+});
 
 // $( "#contactForm" ).submit(function( event ) {
 //     alert( "Handler for .submit() called." );
 //     // event.preventDefault();
 //   });
 
-$("#form-submit").click(function(){
-    submitForm();
-});
+// $("#form-submit").click(function(){
+//     submitForm();
+// });
 
 function submitForm(){
     var name=$("#name").val();
@@ -21,6 +21,7 @@ function submitForm(){
 
     $.ajax({
         type:"POST",
+        contenttype:"JSON",
         url:"api/FormProcess/abc",
         data:{
             "Name":name,

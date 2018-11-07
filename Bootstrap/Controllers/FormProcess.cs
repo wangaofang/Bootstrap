@@ -11,21 +11,9 @@ namespace Bootstrap.Controllers
     [ApiController]
     public class FormProcessController : ControllerBase
     {
-        // [HttpPost("FromForm")]
-        // [Route("abc")]
-        // public ActionResult<string> PostFromForm([FromForm] Person person)
-        // {
-        //     if (person == null)
-        //     {
-        //         return BadRequest();
-        //     }
-
-        //    return person.Name+"_"+person.Email+"_"+person.Message;
-        // }
-
-        [HttpPost("FromBody")]
+        [HttpPost("FromForm")]
         [Route("abc")]
-        public ActionResult<string> PostFromBody(Person person)
+        public ActionResult<string> PostFromForm([FromForm] Person person)
         {
             if (person == null)
             {
@@ -35,5 +23,18 @@ namespace Bootstrap.Controllers
             //    return person.Name+"_"+person.Email+"_"+person.Message;
             return "success";
         }
+
+        // [HttpPost("FromBody")]
+        // [Route("abc")]
+        // public ActionResult<string> PostFromBody([FromBody] Person person)
+        // {
+        //     if (person == null)
+        //     {
+        //         return BadRequest();
+        //     }
+
+        //     //    return person.Name+"_"+person.Email+"_"+person.Message;
+        //     return "success";
+        // }
     }
 }
