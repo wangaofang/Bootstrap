@@ -25,16 +25,16 @@ namespace Bootstrap.Controllers
         }
 
         // [HttpPost("FromBody")]
-        // [Route("abc")]
-        // public ActionResult<string> PostFromBody([FromBody] Person person)
-        // {
-        //     if (person == null)
-        //     {
-        //         return BadRequest();
-        //     }
+        [Route("abcd")]
+        public ActionResult<string> PostFromBody(Person person)
+        {
+            if (person == null)
+            {
+                return BadRequest();
+            }
 
-        //     //    return person.Name+"_"+person.Email+"_"+person.Message;
-        //     return "success";
-        // }
+            //    return person.Name+"_"+person.Email+"_"+person.Message;
+            return "success";
+        }
     }
 }
