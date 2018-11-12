@@ -11,6 +11,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Mvc.Formatters.Json;
+using Newtonsoft.Json.Serialization;
+using Microsoft.AspNetCore.Mvc.Formatters;
+using NLog.Extensions.Logging;
+using Bootstrap.Services;
+using Bootstrap.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Bootstrap
 {
@@ -21,17 +27,33 @@ namespace Bootstrap
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        public static IConfiguration Configuration { get;private set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvcCore().SetCompatibilityVersion(CompatibilityVersion.Version_2_1).AddFormatterMappings().AddJsonFormatters();            
-            
+            services.AddMvcCore().SetCompatibilityVersion(CompatibilityVersion.Version_2_1)
+            .AddFormatterMappings().AddJsonOptions((options) =>
+            {
+                options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+            })
+            .AddJsonFormatters().AddMvcOptions(Options =>
+            {
+                Options.OutputFormatters.Add(new XmlDataContractSerializerOutputFormatter());
+            });
+
+#if debug
+            services.AddTransient<IMailService, LocalMailService>();      
+#else
+            services.AddTransient<IMailService, CloudMailService>();
+#endif
+            //  services.AddDbContext<MyContext>();
+            var connectionString = @"Server=(localdb)\MSSQLLocalDB;Database=ProductDB;Trusted_Connection=True";
+            services.AddDbContext<MyContext>(o => o.UseSqlServer(connectionString));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -42,11 +64,13 @@ namespace Bootstrap
                 app.UseHsts();
             }
 
+            loggerFactory.AddNLog();
+
             app.UseStatusCodePages(); // !!!
             app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseHttpsRedirection();
-            app.UseMvc();            
+            app.UseMvc();
         }
     }
 }
