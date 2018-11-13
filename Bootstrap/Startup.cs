@@ -53,7 +53,7 @@ namespace Bootstrap
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory,MyContext myContext)
         {
             if (env.IsDevelopment())
             {
@@ -64,7 +64,11 @@ namespace Bootstrap
                 app.UseHsts();
             }
 
+            myContext.EnsureSeedDataForContext();
+
             loggerFactory.AddNLog();
+            
+
 
             app.UseStatusCodePages(); // !!!
             app.UseDefaultFiles();

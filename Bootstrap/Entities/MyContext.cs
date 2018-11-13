@@ -7,7 +7,8 @@ namespace Bootstrap.Entities
         public MyContext(DbContextOptions<MyContext> options)
            : base(options)
         {
-            Database.EnsureCreated();
+            // Database.EnsureCreated();
+            Database.Migrate();
         }
         public DbSet<Product> Products { get; set; }
 
