@@ -3,14 +3,16 @@ using Bootstrap.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Bootstrap.Migrations
 {
     [DbContext(typeof(MyContext))]
-    partial class MyContextModelSnapshot : ModelSnapshot
+    [Migration("20181114075729_AddMaterial")]
+    partial class AddMaterial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -51,6 +53,7 @@ namespace Bootstrap.Migrations
                         .HasMaxLength(50);
 
                     b.Property<decimal>("Price")
+                        .HasConversion(new ValueConverter<decimal, decimal>(v => default(decimal), v => default(decimal), new ConverterMappingHints(precision: 38, scale: 17)))
                         .HasColumnType("decimal(8,2)");
 
                     b.HasKey("Id");
@@ -61,7 +64,7 @@ namespace Bootstrap.Migrations
             modelBuilder.Entity("Bootstrap.Entities.Material", b =>
                 {
                     b.HasOne("Bootstrap.Entities.Product", "Product")
-                        .WithMany("Materials")
+                        .WithMany("Meterials")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

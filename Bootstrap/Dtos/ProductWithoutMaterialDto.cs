@@ -1,14 +1,10 @@
-using System.Collections.Generic;
-
-namespace Bootstrap.Entities
+namespace Bootstrap.Dtos
 {
-    public class Product
+    public class ProductWithoutMaterialDto
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public decimal Price { get; set; }
         public string Description { get; set; }
-
-        public ICollection<Material> Materials { get; set; }
     }
 }
